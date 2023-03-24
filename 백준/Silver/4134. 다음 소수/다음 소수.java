@@ -1,39 +1,39 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    private static boolean isPrime(long input) {
-        if (input == 0 || input == 1) {
-            return false;
-        }
-        for (long i = 2; i*i <= input; i++) {
-            if (input % i == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static long getPrime(long input) {
-        long result = input;
-        while (!isPrime(result)) {
-            result++;
-        }
-        return result;
-    }
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int size = Integer.parseInt(br.readLine());
-        long[] nums = new long[size];
-        for (int i = 0; i < size; i++) {
-            nums[i] = Long.parseLong(br.readLine());
-        }
+        StringBuilder sb = new StringBuilder();
 
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        for (long num : nums) {
-            bw.write(getPrime(num) + "\n");
+        long t = Long.parseLong(br.readLine());
+
+        long num, sq;
+        boolean isSosu;
+        while (t-- > 0) {
+            num = Long.parseLong(br.readLine());
+
+            if (num < 2L) {
+                sb.append("2").append("\n");
+                continue;
+            }
+
+            while (true) {
+                isSosu = true;
+                for (long l=2L; l*l<=num; l++) {
+                    if (num % l == 0L) {
+                        isSosu = false;
+                        break;
+                    }
+                }
+                if (isSosu) {
+                    sb.append(num).append("\n");
+                    break;
+                }
+                ++num;
+            }
         }
-        bw.flush();
-        bw.close();
+        System.out.print(sb.toString());
     }
 }
