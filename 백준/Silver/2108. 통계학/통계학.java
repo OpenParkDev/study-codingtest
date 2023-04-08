@@ -1,51 +1,45 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class Main {
    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int size = Integer.parseInt(br.readLine());
-        int[] nums = new int[size];
-
-        int sum = 0;
+        int[] freqs = new int[8001];
         for (int i = 0; i < size; i++) {
-            nums[i] = Integer.parseInt(br.readLine());
-            sum += nums[i];
+            freqs[Integer.parseInt(br.readLine()) + 4000]++;
         }
-        Arrays.sort(nums);
 
-        List<Integer> freqs = new ArrayList<>();
-        int max_freq = 0;
-        int max_num = nums[0];
-        int curr_freq = 1;
-        for (int i = 0; i < size-1; i++) {
-            if (nums[i] == nums[i+1]) {
-                curr_freq++;
-            }
-            else {
-                curr_freq = 1;
-            }
-            if (curr_freq > max_freq) {
-                freqs.clear();
-                max_num = nums[i];
-                max_freq = curr_freq;
-            }
-            else if (curr_freq == max_freq) {
-                freqs.add(nums[i]);
+        int sum = 0, median = -5000, mode = -5000, range = -5000;
+        boolean isSecond = false; int max_freq = 0;
+        int count = 0;
+        for (int i = 0; i < freqs.length; i++) {
+            int curr_freq = freqs[i];
+            if (curr_freq > 0) {
+                int num = i - 4000;
+                if (curr_freq == max_freq && isSecond) {
+                    isSecond = false;
+                    mode = num;
+                }
+                if (curr_freq > max_freq) {
+                    isSecond = true;
+                    max_freq = curr_freq;
+                    mode = num;
+                }
+                count += curr_freq;
+                sum += curr_freq * num;
+                if (count >= (size/2 + 1) && median == -5000) {
+                    median = num;
+                }
+                if (count >= 1 && range == -5000) {
+                    range = -num;
+                }
+                if (count == size) {
+                    range += num;
+                    break;
+                }
             }
         }
-        if (!freqs.isEmpty()) {
-            Collections.sort(freqs);
-            max_num = freqs.get(0);
-        }
-        
         int avg = Math.round((float) sum/size);
-        int median = nums[size/2];
-        int range = nums[size-1] - nums[0];
-        int mode = max_num;
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         bw.write(avg + "\n" + median + "\n" + mode + "\n" + range);
