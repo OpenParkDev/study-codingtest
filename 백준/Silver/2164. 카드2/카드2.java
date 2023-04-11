@@ -1,20 +1,28 @@
 import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        int result = 1;
-        while (result < n) {
-            result <<= 1;
-        }
-        if (result != 1) {
-            result = (n - (result >> 1)) << 1;
-        }
+    static int f(int m){
+        if(m<=2) return m;
+        if(m%2==0) return 2*f(m/2);
+        return (2*f(m/2)+1)%(m-1)+1;
+    }
+    public static void main(String args[]) throws Exception {
+        int n = readInt();
+        System.out.println(f(n));
+    }
 
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        bw.write(String.valueOf(result));
-        bw.flush();
-        bw.close();
+    static int readInt() throws IOException {
+        int sum = 0;
+        boolean isNegative = false;
+        while (true) {
+            int input = System.in.read();
+            if (input == '\n' || input == ' ')
+                return isNegative ? sum * -1 : sum;
+            else if (input == '-')
+                isNegative = true;
+            else
+                sum = (sum * 10) + input - '0';
+        }
     }
 }
