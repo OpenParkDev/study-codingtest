@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.StringTokenizer;
 
 public class Main {
     private static int[] queue;
@@ -10,10 +11,7 @@ public class Main {
     }
 
     public static int pop() {
-        if (empty() == 1) {
-            return -1;
-        }
-        return queue[tail++];
+        return (head == tail) ? -1 : queue[tail++];
     }
 
     public static int size() {
@@ -21,24 +19,15 @@ public class Main {
     }
 
     public static int empty() {
-        if (head == tail) {
-            return 1;
-        }
-        return 0;
+        return (head == tail) ? 1 : 0;
     }
 
     public static int front() {
-        if (empty() == 1) {
-            return -1;
-        }
-        return queue[tail];
+        return (head == tail) ? -1 : queue[tail];
     }
 
     public static int back() {
-        if (empty() == 1) {
-            return -1;
-        }
-        return queue[head-1];
+        return (head == tail) ? -1 : queue[head-1];
     }
 
     public static void main(String[] args) throws IOException {
@@ -48,10 +37,10 @@ public class Main {
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < inputSize; i++) {
-            String[] ops = br.readLine().split(" ");
-            switch (ops[0]) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            switch (st.nextToken()) {
                 case "push":
-                    push(Integer.parseInt(ops[1]));
+                    push(Integer.parseInt(st.nextToken()));
                     break;
                 case "pop":
                     sb.append(pop()).append("\n");
