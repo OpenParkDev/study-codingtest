@@ -1,51 +1,69 @@
 import java.io.*;
-import java.util.*;
 
 public class Main {
-    private static String getResult(String[] ops, String[] nums) {
-        Deque<String> deque = new ArrayDeque<>();
-        for (String num : nums) {
-            if (!num.equals("")) {
-                deque.add(num);
+    private static String toStrFormat(int front, int tail, int[] nums, boolean isReverse) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        if (tail >= front) {
+            if (isReverse) {
+                for (int i = tail; i > front; i--) {
+                    sb.append(nums[i]).append(",");
+                }
+                sb.append(nums[front]);
+            }
+            else {
+                for (int i = front; i < tail; i++) {
+                    sb.append(nums[i]).append(",");
+                }
+                sb.append(nums[tail]);
             }
         }
+        sb.append("]");
+        return sb.toString();
+    }
 
+    private static int[] toArray(int numSize, String nums) {
+        int[] arr = new int[numSize];
+        if (numSize == 0) {
+            return arr;
+        }
+        int num = 0;
+        for (int i = 1, j = 0; i < nums.length(); i++) {
+            char c = nums.charAt(i);
+            if (c >= '0' && c <= '9') {
+                num = num * 10 + (c - '0');
+            }
+            else {
+                arr[j++] = num;
+                num = 0;
+            }
+        }
+        return arr;
+    }
+
+    private static String getResult(String ops, int[] nums) {
+        int front = 0;
+        int tail = nums.length - 1;
         int countR = 0;
-        for (String op : ops) {
-            if (op.equals("R")) {
+        for (int i = 0; i < ops.length(); i++) {
+            char c = ops.charAt(i);
+            if (c == 'R') {
                 countR++;
             }
-            else if (op.equals("D")) {
-                if (deque.isEmpty()) {
+            else if (c == 'D') {
+                if (tail < front) {
                     return "error";
                 }
 
                 if (countR % 2 == 0) {
-                    deque.pollFirst();
+                    front++;
                 }
                 else {
-                    deque.pollLast();
+                    tail--;
                 }
             }
         }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        if (!deque.isEmpty()) {
-            if (countR % 2 != 0) {
-                while (deque.size() > 1) {
-                    sb.append(deque.pollLast()).append(",");
-                }
-            }
-            else {
-                while (deque.size() > 1) {
-                    sb.append(deque.pollFirst()).append(",");
-                }
-            }
-            sb.append(deque.poll());
-        }
-        sb.append("]");
-        return sb.toString();
+        return toStrFormat(front, tail, nums, (countR % 2 != 0));
     }
 
     public static void main(String[] args) throws IOException {
@@ -54,9 +72,9 @@ public class Main {
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < inputSize; i++) {
-            String[] ops = br.readLine().split("");
+            String ops = br.readLine();
             int numSize = Integer.parseInt(br.readLine());
-            String[] nums = br.readLine().split("[,\\[\\]]");
+            int[] nums = toArray(numSize, br.readLine());
             sb.append(getResult(ops, nums)).append("\n");
         }
 
