@@ -2,9 +2,10 @@ import java.io.*;
 
 public class Main {
     private static int[] matrix;
+    private static int size;
 
     private static boolean checkCross(int i, int j) {
-        for (int row = matrix.length-1; row > i; row--) {
+        for (int row = size; row > i; row--) {
             int col = matrix[row];
             if ((row - col == i - j) || (row + col == i + j)) {
                 return false;
@@ -14,7 +15,7 @@ public class Main {
     }
 
     private static boolean checkCol(int i, int j) {
-        for (int row = matrix.length-1; row > i; row--) {
+        for (int row = size; row > i; row--) {
             int col = matrix[row];
             if (col == j) {
                 return false;
@@ -28,7 +29,7 @@ public class Main {
             return 1;
         }
         int count = 0;
-        for (int j = 1; j < matrix.length; j++) {
+        for (int j = size; j > 0; j--) {
             if (checkCol(n, j) && checkCross(n, j)) {
                 matrix[n] = j;
                 count += solveNQueen(n-1);
@@ -40,11 +41,11 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        matrix = new int[n+1];
+        size = Integer.parseInt(br.readLine());
+        matrix = new int[size+1];
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        bw.write(String.valueOf(solveNQueen(n)));
+        bw.write(String.valueOf(solveNQueen(size)));
         bw.flush();
         bw.close();
     }
