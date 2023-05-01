@@ -1,6 +1,8 @@
 import java.io.*;
 
 public class Main {
+    private static boolean[] col;
+    private static boolean[] cross;
     private static int[] matrix;
     private static int size;
 
@@ -14,14 +16,8 @@ public class Main {
         return true;
     }
 
-    private static boolean checkCol(int i, int j) {
-        for (int row = size; row > i; row--) {
-            int col = matrix[row];
-            if (col == j) {
-                return false;
-            }
-        }
-        return true;
+    private static boolean checkCol(int j) {
+        return !col[j];
     }
 
     private static int solveNQueen(int n) {
@@ -30,10 +26,12 @@ public class Main {
         }
         int count = 0;
         for (int j = size; j > 0; j--) {
-            if (checkCol(n, j) && checkCross(n, j)) {
+            if (checkCol(j) && checkCross(n, j)) {
                 matrix[n] = j;
+                col[j] = true;
                 count += solveNQueen(n-1);
                 matrix[n] = 0;
+                col[j] = false;
             }
         }
         return count;
@@ -42,6 +40,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         size = Integer.parseInt(br.readLine());
+        col = new boolean[size+1];
         matrix = new int[size+1];
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
