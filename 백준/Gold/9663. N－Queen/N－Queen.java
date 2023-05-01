@@ -5,6 +5,7 @@ public class Main {
     private static boolean[] cross_plus;
     private static boolean[] cross_minus;
     private static int size;
+    private static int count;
 
     private static boolean checkCross(int i, int j) {
         return !cross_plus[i + j + size - 1] && !cross_minus[i - j + size - 1];
@@ -14,23 +15,22 @@ public class Main {
         return !col[j];
     }
 
-    private static int solveNQueen(int n) {
+    private static void solveNQueen(int n) {
         if (n == 0) {
-            return 1;
+            count++;
+            return;
         }
-        int count = 0;
         for (int j = size; j > 0; j--) {
             if (checkCol(j) && checkCross(n, j)) {
                 col[j] = true;
                 cross_plus[n+j+size-1] = true;
                 cross_minus[n-j+size-1] = true;
-                count += solveNQueen(n-1);
+                solveNQueen(n-1);
                 col[j] = false;
                 cross_plus[n+j+size-1] = false;
                 cross_minus[n-j+size-1] = false;
             }
         }
-        return count;
     }
 
     public static void main(String[] args) throws IOException {
@@ -39,9 +39,10 @@ public class Main {
         col = new boolean[size+1];
         cross_plus = new boolean[size*3];
         cross_minus = new boolean[size*3];
+        solveNQueen(size);
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        bw.write(String.valueOf(solveNQueen(size)));
+        bw.write(String.valueOf(count));
         bw.flush();
         bw.close();
     }
