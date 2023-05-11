@@ -11,8 +11,8 @@ def get_min_diff():
     team_size, stat_matrix = read()
     
     row_sum = [sum(i) for i in stat_matrix]
-    col_sum = [sum(i) for i in zip(*stat_matrix)]
-    stats = [row_sum[i] + col_sum[i] for i in range(team_size)]
+    col_sum = [sum(j) for j in zip(*stat_matrix)]
+    stats = [i+j for i, j in zip(row_sum, col_sum)]
     
     total_stat = sum(stats)
     cases = list(combinations(stats, team_size // 2))
