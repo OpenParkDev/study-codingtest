@@ -6,10 +6,7 @@ def repeat(rSize, word):
     return str
 
 testSize = int(input())
-result = list()
 for i in range(testSize):
     rSize, word = input().split()
     rSize = int(rSize)
-    result.append(repeat(rSize, word))
-for str in result:
-    print(str)
+    print(repeat(rSize, word))
