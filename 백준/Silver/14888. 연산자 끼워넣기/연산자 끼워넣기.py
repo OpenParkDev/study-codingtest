@@ -1,47 +1,48 @@
 import sys
-from itertools import permutations
 
-def read():
+max = -1e9
+min = 1e9
+
+def read_input():
     nums_size = int(sys.stdin.readline())
-    nums = list(map(int, sys.stdin.readline().split()))
-    ops_size = list(map(int, sys.stdin.readline().split()))
-    ops_dict = ["+", "-", "*", "//"]
-    ops = []
-    for idx in range(4):
-        for i in range(ops_size[idx]):
-            ops.append(ops_dict[idx])
-    return [nums_size, nums, ops]
+    nums_list= list(map(int, sys.stdin.readline().split()))
+    ops_list = list(map(int, sys.stdin.readline().split()))
+    return [nums_size, nums_list, ops_list]
 
-def cal_exp(nums, exp):
-    result = nums[0]
-    for idx in range(len(exp)):
-        if exp[idx] == "+":
-            result += nums[idx+1]
-        elif exp[idx] == "-":
-            result -= nums[idx+1]
-        elif exp[idx] == "*":
-            result *= nums[idx+1]
-        else:
-            if result < 0:
-                result *= -1
-                result //= nums[idx+1]
-                result *= -1
-            else:
-                result //= nums[idx+1]
-    return result
+def update_result(val):
+    global max, min
+    if val < min:
+        min = val
+    if val > max:
+        max = val
 
-def get_maxmin():
-    nums_size, nums, ops = read()
-    exps = list(permutations(ops, nums_size-1))
-    min = sys.maxsize
-    max = -min
-    for exp in exps:
-        result = cal_exp(nums=nums, exp=exp)
-        if result < min:
-            min = result
-        if result > max:
-            max = result
+def custom_div(a, b):
+    if a > 0:
+        return a // b
+    return -(-a//b)
+
+def dfs(val, idx, nums_list, add, sub, mul, div):
+    if (idx == 0):
+        return update_result(val=val)
+    
+    if add > 0:
+        dfs(val=val+nums_list[-idx], idx=idx-1, nums_list=nums_list
+            , add=add-1, sub=sub, mul=mul, div=div)
+    if sub > 0:
+        dfs(val=val-nums_list[-idx], idx=idx-1, nums_list=nums_list
+            , add=add, sub=sub-1, mul=mul, div=div)
+    if mul > 0:
+        dfs(val=val*nums_list[-idx], idx=idx-1, nums_list=nums_list
+            , add=add, sub=sub, mul=mul-1, div=div)
+    if div > 0:
+        dfs(val=custom_div(val, nums_list[-idx]), idx=idx-1, nums_list=nums_list
+            , add=add, sub=sub, mul=mul, div=div-1)
+
+def get_answer():
+    nums_size, nums_list, ops_list = read_input()
+    dfs(val=nums_list[0], idx=nums_size-1, nums_list=nums_list
+        , add=ops_list[0], sub=ops_list[1], mul=ops_list[2], div=ops_list[3])
     print(max)
     print(min)
 
-get_maxmin()
+get_answer()
