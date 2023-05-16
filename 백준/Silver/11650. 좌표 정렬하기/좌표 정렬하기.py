@@ -1,17 +1,12 @@
 import sys
 
-def read_input():
-    nums_size = int(sys.stdin.readline())
-    nums_list = []
-    for idx in range(nums_size):
-        i, j = map(int, sys.stdin.readline().split())
-        nums_list.append((i, j))
-    return nums_list
+def get_pos(nums):
+    i, j = nums.split()
+    return int(i) + int(j)/1000000
 
 def get_answer():
-    nums_list = read_input()
-    nums_list.sort()
-    for nums in nums_list:
-        print(nums[0], nums[1])
+    nums_list = sys.stdin.readlines()[1:]
+    nums_list.sort(key=lambda nums: get_pos(nums))
+    sys.stdout.write("".join(nums_list))
 
 get_answer()
