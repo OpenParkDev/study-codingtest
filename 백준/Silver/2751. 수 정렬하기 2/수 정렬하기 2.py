@@ -10,13 +10,6 @@ def read_input():
 
 def get_answer():
     nums_size, nums_list = read_input()
-    count = 0
-    for i in range(2000001):
-        if (count == nums_size):
-            break
-        if nums_list[i] == True:
-            sys.stdout.write(str(i-1000000))
-            sys.stdout.write("\n")
-            count += 1
+    print("\n".join([str(i-1000000) for i in range(2000001) if nums_list[i] == True]))
 
 get_answer()
