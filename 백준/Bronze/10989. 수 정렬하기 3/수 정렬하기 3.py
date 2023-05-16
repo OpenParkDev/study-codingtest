@@ -15,7 +15,8 @@ def get_answer():
         if (count == nums_size):
             break
         for j in range(nums_list[i]):
-            print(i)
+            sys.stdout.write(str(i))
+            sys.stdout.write("\n")
             count += 1
 
 get_answer()
