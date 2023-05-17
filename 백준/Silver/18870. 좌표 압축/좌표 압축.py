@@ -6,12 +6,8 @@ def get_answer():
     
     sorted_vectors_list = list(set(vectors_list))
     sorted_vectors_list.sort()
+    index_dict = {val:idx for idx, val in enumerate(sorted_vectors_list)}
     
-    vectors_dict = {}
-    for idx in range(len(sorted_vectors_list)):
-        vectors_dict[sorted_vectors_list[idx]] = idx
-    
-    for vector in vectors_list:
-        print(vectors_dict[vector], end=" ")
+    sys.stdout.write(" ".join([str(index_dict[vector]) for vector in vectors_list]))
 
 get_answer()
