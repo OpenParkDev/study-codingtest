@@ -17,9 +17,11 @@ def w(a, b, c):
     return w_result[a][b][c]
 
 def get_answer():
-    inputs_list = sys.stdin.read().splitlines()[:-1]
-    inputs_list = [tuple(map(int, input.split())) for input in inputs_list]
-    outputs_list = ["w({}, {}, {}) = {}".format(*input, w(*input)) for input in inputs_list]
-    sys.stdout.write("\n".join(outputs_list))
+    while True:
+        a, b, c = map(int, sys.stdin.readline().split())
+        if a == b == c == -1:
+            break
+        else:
+            sys.stdout.write(f"w({a}, {b}, {c}) = {w(a, b, c)}\n")
 
 get_answer()
