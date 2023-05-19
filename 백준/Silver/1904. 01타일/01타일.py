@@ -1,10 +1,9 @@
-import sys
-N= int(sys.stdin.readline())
+f = [1, 1]
 
-arrs=[0]*(N+2)
-arrs[1]=1
-arrs[2]=2
+def get_answer():
+    n = int(input())
+    for i in range(2, n+1):
+        f.append((f[i-1] + f[i-2]) % 15746)
+    print(f[n])
 
-for i in range(1,N-1): 
-    arrs[i+2]=(arrs[i]+arrs[i+1])%15746
-print(arrs[N]%15746)
+get_answer()
