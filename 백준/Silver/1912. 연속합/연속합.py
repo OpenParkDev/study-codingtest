@@ -2,11 +2,11 @@ import sys
             
 def get_max_sum(nums_list):
     max_sum = -1000
-    sums_list = [0]
+    sum = 0
     for num in nums_list:
-        sums_list.append(max(sums_list[-1]+num, num))
-        if sums_list[-1] > max_sum:
-            max_sum = sums_list[-1]
+        sum = max(sum+num, num)
+        if sum > max_sum:
+            max_sum = sum
     return max_sum
 
 def get_answer():
