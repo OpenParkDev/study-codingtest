@@ -1,7 +1,5 @@
-import sys
-
-input_size = int(sys.stdin.readline())
-input_nums = list(map(int, sys.stdin.readline().split()))
+input_size = int(input())
+input_nums = list(map(int, input().split()))
 stack = []
 answer = [-1] * input_size
 for idx in range(input_size):
